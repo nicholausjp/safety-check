@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LinkStamp — Instant Verification</title>
+<style>
+  :root{
+    --ink:#1b2420;
+    --paper:#f6f4ee;
+    --line:#1b2420;
+    --stamp:#2f7d4f;
+    --stamp-dark:#1f5c38;
+    --muted:#6b6a63;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Iowan Old Style','Palatino Linotype',Georgia,serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:48px 20px 32px;
+  }
+  .wrap{
+    width:100%;
+    max-width:560px;
+  }
+  header{
+    text-align:left;
+    border-bottom:2px solid var(--line);
+    padding-bottom:18px;
+    margin-bottom:36px;
+  }
+  h1{
+    font-size:2.1rem;
+    margin:0 0 6px;
+    letter-spacing:-0.01em;
+    font-weight:600;
+  }
+  header p{
+    margin:0;
+    color:var(--muted);
+    font-size:0.98rem;
+    font-style:italic;
+  }
+  form{
+    display:flex;
+    gap:0;
+    border:2px solid var(--line);
+  }
+  input{
+    flex:1;
+    border:none;
+    background:transparent;
+    padding:16px 14px;
+    font-size:1rem;
+    font-family:inherit;
+    color:var(--ink);
+    outline:none;
+  }
+  input::placeholder{ color:#9c9a90; }
+  button{
+    border:none;
+    border-left:2px solid var(--line);
+    background:var(--ink);
+    color:var(--paper);
+    padding:16px 26px;
+    font-family:inherit;
+    font-size:1rem;
+    cursor:pointer;
+    transition:background 0.15s ease;
+  }
+  button:hover{ background:#33413a; }
+  button:disabled{ cursor:default; opacity:0.7; }
+
+  .result{
+    margin-top:40px;
+    border:2px solid var(--line);
+    padding:32px 28px;
+    display:none;
+    background:#fff;
+  }
+  .result.show{ display:block; animation:settle 0.4s ease; }
+  @keyframes settle{
+    from{ opacity:0; transform:translateY(8px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .result-url{
+    font-size:0.85rem;
+    color:var(--muted);
+    word-break:break-all;
+    margin-bottom:20px;
+    padding-bottom:14px;
+    border-bottom:1px solid #ddd9cc;
+  }
+  .stamp-row{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin-bottom:22px;
+  }
+  .stamp-circle{
+    width:54px;
+    height:54px;
+    border-radius:50%;
+    background:var(--stamp);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+  }
+  .stamp-circle svg{ width:28px; height:28px; }
+  .stamp-text .big{
+    font-size:1.3rem;
+    font-weight:600;
+    color:var(--stamp-dark);
+    display:block;
+  }
+  .stamp-text .small{
+    font-size:0.85rem;
+    color:var(--muted);
+  }
+  .checks{
+    list-style:none;
+    margin:0;
+    padding:0;
+    display:grid;
+    gap:10px;
+  }
+  .checks li{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:0.97rem;
+  }
+  .checks li svg{ width:16px; height:16px; flex-shrink:0; color:var(--stamp); }
+
+  footer{
+    max-width:560px;
+    width:100%;
+    margin-top:56px;
+    padding-top:18px;
+    border-top:1px solid #ddd9cc;
+    font-size:0.78rem;
+    line-height:1.5;
+    color:var(--muted);
+    text-align:left;
+  }
+  footer strong{ color:var(--ink); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>LinkStamp</h1>
+      <p>Paste a link. Get a verdict.</p>
+    </header>
+
+    <form id="form">
+      <input type="text" id="urlInput" placeholder="https://example.com" required>
+      <button type="submit" id="btn">Check</button>
+    </form>
+
+    <div class="result" id="result">
+      <div class="result-url" id="resultUrl"></div>
+      <div class="stamp-row">
+        <div class="stamp-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <div class="stamp-text">
+          <span class="big">Verified</span>
+          <span class="small">Checked just now</span>
+        </div>
+      </div>
+      <ul class="checks">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Accurate</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Safe to open</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> No AI was used</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    <strong>This is a joke, not a real verification tool.</strong> It does not check links for accuracy, safety, or AI use — it was built to always show a green checkmark, no matter what you enter. Nothing on this page should be trusted, and it should never be used to judge whether a real link is actually safe to click.
+  </footer>
+
+<script>
+  document.getElementById('form').addEventListener('submit', function(e){
+    e.preventDefault();
+    const url = document.getElementById('urlInput').value.trim();
+    document.getElementById('resultUrl').textContent = url;
+    const result = document.getElementById('result');
+    result.classList.remove('show');
+    void result.offsetWidth;
+    result.classList.add('show');
+  });
+</script>
+</body>
+</html>
